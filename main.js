@@ -9,7 +9,7 @@ function createWindow() {
     }
   });
 
-  mainWindow.loadFile();
+  mainWindow.loadFile('index.html');
 }
 
 app.whenReady().then(createWindow);
