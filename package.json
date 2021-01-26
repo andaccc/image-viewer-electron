@@ -2,15 +2,15 @@
   "name": "image-viewer-electron",
   "version": "1.0.0",
   "description": "Development Plan\r - electron-react structure\r - image drag-drop\r - value analyzer",
-  "main": "main.js",
+  "main": "src/main/main.js",
   "scripts": {
     "start": "electron-forge start",
     "test": "echo \"Error: no test specified\" && exit 1",
     "package": "electron-forge package",
     "make": "electron-forge make",
-    "startDev": "cross-env npm run start:renderer",
-    "start:renderer": "cross-env NODE_ENV=development electron ",
-    "start:main": ""
+    "dev": "npm run start:renderer",
+    "start:renderer": "cross-env NODE_ENV=development webpack serve --config ./scripts/configs/webpack.config.renderer.dev.babel.js",
+    "start:main": "cross-env NODE_ENV=development electron-forge start"
   },
   "repository": {
     "type": "git",
@@ -24,16 +24,33 @@
   },
   "homepage": "https://github.com/andaccc/image-viewer-electron#readme",
   "devDependencies": {
+    "@babel/core": "^7.12.10",
+    "@babel/preset-env": "^7.12.11",
+    "@babel/preset-react": "^7.12.10",
+    "@babel/register": "^7.12.10",
     "@electron-forge/cli": "^6.0.0-beta.54",
     "@electron-forge/maker-deb": "^6.0.0-beta.54",
     "@electron-forge/maker-rpm": "^6.0.0-beta.54",
     "@electron-forge/maker-squirrel": "^6.0.0-beta.54",
     "@electron-forge/maker-zip": "^6.0.0-beta.54",
+    "babel-loader": "^8.2.2",
     "cross-env": "^7.0.3",
-    "electron": "^11.1.1"
+    "css-loader": "^5.0.1",
+    "electron": "^11.1.1",
+    "file-loader": "^6.2.0",
+    "sass": "^1.32.5",
+    "sass-loader": "^10.1.1",
+    "style-loader": "^2.0.0",
+    "url-loader": "^4.1.1",
+    "webpack": "^5.17.0",
+    "webpack-cli": "^4.4.0",
+    "webpack-dev-server": "^3.11.2"
   },
   "dependencies": {
-    "electron-squirrel-startup": "^1.0.0"
+    "electron-squirrel-startup": "^1.0.0",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "react-router-dom": "^5.2.0"
   },
   "config": {
     "forge": {

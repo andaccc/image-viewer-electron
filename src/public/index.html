@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Hello World!</title>
+	<!-- <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
+	-->
+		<script>
+		/*	css
+		(() => {
+			const link = document.creatElement('link');
+			link.rel = 'stylesheet';
+			link.href = './dist/style.css';
+			document.getElementsByTagName('head')[0].appendChild(link);
+		})
+		*/
+	</script>
+</head>
+<body>
+	<div id="root"></div>
+	<script>
+
+		if (typeof process === 'object') {
+			const scripts = [];
+			if (process.env.NODE_ENV === 'development') {
+				const port = process.env.PORT || 1212;
+				
+				scripts.push(`http://localhost:${port}/dist/renderer.dev.js`);	
+			}
+			else {
+				scripts.push('./dist/renderer.prod.js');
+			}
+
+			if (scripts.length) {
+				document.write(
+					scripts
+						.map((script) => `<script defer src="${script}"><\/script>`)
+						.join('')
+				)
+			}
+		}
+	</script>
+</body>
+</html>
