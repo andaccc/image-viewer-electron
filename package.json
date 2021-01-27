@@ -2,15 +2,35 @@
   "name": "image-viewer-electron",
   "version": "1.0.0",
   "description": "Development Plan\r - electron-react structure\r - image drag-drop\r - value analyzer",
-  "main": "src/main/main.js",
+  "main": "src/main.js",
   "scripts": {
     "start": "electron-forge start",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "package": "electron-forge package",
     "make": "electron-forge make",
     "dev": "npm run start:renderer",
     "start:renderer": "cross-env NODE_ENV=development webpack serve --config ./scripts/configs/webpack.config.renderer.dev.babel.js",
-    "start:main": "cross-env NODE_ENV=development electron-forge start"
+    "start:main": "cross-env NODE_ENV=development electron-forge start",
+    "package": "rm -rf ./dist && yarn build && electron-builder build",
+    "build": "concurrently \"yarn build:main\" \"yarn build:renderer\"",
+    "build:main": "cross-env NODE_ENV=production webpack --config ./scripts/configs/webpack.config.main.prod.babel.js",
+    "build:renderer": "cross-env NODE_ENV=production webpack --config ./scripts/configs/webpack.config.renderer.prod.babel.js"
+  },
+  "build": {
+    "productName": "ElectronImageViewer",
+    "appId": "com.electron.imageViewer",
+    "files": [
+      "build/"
+    ],
+    "win": {
+      "target": [
+        "nsis"
+      ]
+    },
+    "directories": {
+      "app": "src",
+      "buildResources": "assets",
+      "output": "dist"
+    }
   },
   "repository": {
     "type": "git",
@@ -34,6 +54,7 @@
     "@electron-forge/maker-squirrel": "^6.0.0-beta.54",
     "@electron-forge/maker-zip": "^6.0.0-beta.54",
     "babel-loader": "^8.2.2",
+    "copy-webpack-plugin": "^7.0.0",
     "cross-env": "^7.0.3",
     "css-loader": "^5.0.1",
     "electron": "^11.1.1",
@@ -43,10 +64,12 @@
     "style-loader": "^2.0.0",
     "url-loader": "^4.1.1",
     "webpack": "^5.17.0",
+    "webpack-bundle-analyzer": "^4.4.0",
     "webpack-cli": "^4.4.0",
     "webpack-dev-server": "^3.11.2"
   },
   "dependencies": {
+    "concurrently": "^5.3.0",
     "electron-squirrel-startup": "^1.0.0",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",

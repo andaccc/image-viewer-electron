@@ -10,7 +10,7 @@
       "name": "Launch Program via npm ",
       "cwd": "${workspaceFolder}",
       "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "startDev"]
+      "runtimeArgs": ["run", "dev"]
     }
   ]
 }
