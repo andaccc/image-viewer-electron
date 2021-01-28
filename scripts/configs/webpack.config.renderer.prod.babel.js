@@ -22,17 +22,26 @@ export default merge(baseConfig, {
   entry: [
     'core-js',
     'regenerator-runtime/runtime',
-    path.join(__dirname, '../../src/renderer/index.tsx'),
+    path.join(__dirname, '../../src/renderer/index.jsx'),
   ],
 
   output: {
-    path: path.join(__dirname, '../../src/dist/public/'),
+    path: path.join(__dirname, '../../build/public/'),
     publicPath: './dist/',
     filename: 'renderer.prod.js',
   },
 
   module: {
     rules: [
+      {
+        test: /\.[jt]sx?$/,
+        exclude: /node_modules/,
+        use: [
+          {
+            loader: require.resolve('babel-loader'),
+          }
+        ]
+      },
       {
         test: /.s?css$/,
         use: [
@@ -146,8 +155,8 @@ export default merge(baseConfig, {
     new CopyPlugin({
       patterns: [
         { 
-          from: "../../src/public/index.html",
-          to: "../../build/public/index.html"
+          from: "./src/public/index.html",
+          to: "./index.html"
         }
       ]
     })

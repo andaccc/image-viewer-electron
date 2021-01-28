@@ -1,0 +1,11 @@
+{
+  "name": "image-viewer-electron",
+  "version": "1.0.0",
+  "description": "image-viewer-electron production",
+  "main": "./main.prod.js",
+  "author": {
+    "name": "",
+    "license": "MIT",
+    "dependencies": {}
+  }
+}
