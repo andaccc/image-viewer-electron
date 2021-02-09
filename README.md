@@ -1,10 +1,15 @@
 # image-viewer-electron
 
-Development Plan
+=== Development Plan ===
+
+# First phase
 - electron-react structure
     - https://github.com/electron-react-boilerplate/electron-react-boilerplate
 - image drag-drop
 - value analyzer
+- Image canvas
+
+# Later Stage
 - simple image edit
 - UI design
 - leftside file explorer

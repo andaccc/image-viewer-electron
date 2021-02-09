@@ -23,22 +23,6 @@ const defaultProps = {
   justifyContent: "center"
 };
 
-function preventDefaults(e) {
-  e.preventDefaults();
-  e.stopPropagation();
-}
-
-function handleDropImage(e) {
-  console.log(e)
-  let reader = new FileReader()
-  reader.readAsDataURL(e.dataTransfer.files)
-  reader.onloadend = () => {
-    let img = document.createElement('img');
-    img.src = reader.result;
-    this.viewZone.appendChild(img)
-  }
-}
-
 export default class ImageViewer extends React.Component {
   constructor(props) {
     super(props);
@@ -46,10 +30,31 @@ export default class ImageViewer extends React.Component {
 
     }
 
+    this.handleDropImage = this.handleDropImage.bind(this);
+
     this.dropRef = React.createRef();
+    this.viewRef = React.createRef();
   }
 
+  handleDropImage = (e) => {
+    let reader = new FileReader()
+    console.log(e.dataTransfer)
 
+    let files = e.dataTransfer.files;
+
+    Array.from(files).forEach( (file) => {
+      if ( /\.(jpe?g|png|gif)$/i.test(file.name) ) {
+        // for image only
+        reader.readAsDataURL(e.dataTransfer.files[0])
+        reader.onloadend = () => {
+          let img = document.createElement('img');
+          img.src = reader.result;
+          this.viewRef.current.appendChild(img)
+        }
+      }
+    });
+
+  }
 
   componentDidMount() {
     document.ondragover = function(e) {
@@ -61,7 +66,11 @@ export default class ImageViewer extends React.Component {
     this.dropRef.current.addEventListener('drop', (events) => {
       console.log('dropped');
 
-      //handleDropImage(events);
+
+      this.handleDropImage(events);
+
+      // no need to send to backend
+      //ipcRenderer.send('ondropfile', events.dataTransfer.files);
     });
   }
 
@@ -71,7 +80,7 @@ export default class ImageViewer extends React.Component {
         <Box ref={this.dropRef} id="dropZone" {...defaultProps} >
           Drag to here
         </Box>
-        <div ref={this.viewZone}>
+        <div ref={this.viewRef}>
         </div>
       </Container>
     );
