@@ -1,5 +1,8 @@
 # image-viewer-electron
 
+=== TODO ===
+middlewheel -> resize all image
+
 === Development Plan ===
 
 # First phase

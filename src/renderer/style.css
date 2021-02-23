@@ -1,0 +1,12 @@
+#main {
+  /*background-color: #cfe8fc;*/
+  height: 100vh;
+}
+
+.draggable {
+  position: absolute;
+}
+
+body {
+  overflow: hidden;
+}

@@ -3,6 +3,10 @@ import Container from '@material-ui/core/Container';
 import Box from '@material-ui/core/Box';
 import ReactDOM from 'react-dom'
 
+import './../style.css';
+
+import { attachDrag } from './../tools/dragHandler'
+
 const { ipcRenderer } = require('electron')
 
 
@@ -11,6 +15,7 @@ const { ipcRenderer } = require('electron')
 
 // image drag drop use native api instead !!!!
 // https://www.electronjs.org/docs/tutorial/native-file-drag-drop
+
 
 const defaultProps = {
   borderRadius: "borderRadius",
@@ -49,7 +54,10 @@ export default class ImageViewer extends React.Component {
         reader.onloadend = () => {
           let img = document.createElement('img');
           img.src = reader.result;
+
           this.viewRef.current.appendChild(img)
+          
+          attachDrag(img)
         }
       }
     });
@@ -76,11 +84,15 @@ export default class ImageViewer extends React.Component {
 
   render() {
     return (
-      <Container>
+      <Container ref={this.dropRef} id="main" 
+      >
+        {/*
         <Box ref={this.dropRef} id="dropZone" {...defaultProps} >
-          Drag to here
         </Box>
-        <div ref={this.viewRef}>
+        */}
+        <div>
+          <div ref={this.viewRef}>
+          </div>
         </div>
       </Container>
     );
