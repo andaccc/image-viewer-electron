@@ -28,6 +28,10 @@ const defaultProps = {
   justifyContent: "center"
 };
 
+// pixel
+const WIDTH_LIMIT = 500; 
+const HEIGHT_LIMIT = 500;
+
 export default class ImageViewer extends React.Component {
   constructor(props) {
     super(props);
@@ -36,6 +40,7 @@ export default class ImageViewer extends React.Component {
     }
 
     this.handleDropImage = this.handleDropImage.bind(this);
+    this.handleZoom = this.handleZoom.bind(this);
 
     this.dropRef = React.createRef();
     this.viewRef = React.createRef();
@@ -55,12 +60,45 @@ export default class ImageViewer extends React.Component {
           let img = document.createElement('img');
           img.src = reader.result;
 
-          this.viewRef.current.appendChild(img)
-          
-          attachDrag(img)
+          this.viewRef.current.appendChild(img);
+
+          img.onload = function() {
+            // limit image size
+            if (img.width > WIDTH_LIMIT) {
+              img.height *= WIDTH_LIMIT / img.width
+              img.width = WIDTH_LIMIT;
+            }
+            else if (img.height > HEIGHT_LIMIT) {
+              img.width *= HEIGHT_LIMIT / img.height 
+              img.height = HEIGHT_LIMIT;
+            }
+          };
+
+          img.classList.add("img-zoomable");
+
+          attachDrag(img);
         }
       }
     });
+  }
+
+  /**
+   * zoom resize
+   *  - need to add scale limit
+   * @param {*} e 
+   */
+  handleZoom = (e) => {
+    e.preventDefault();
+    var scale = e.deltaY * -0.001 + 1;
+
+    var items = document.getElementsByClassName("img-zoomable");
+    for (var i = 0; i < items.length; i++) {
+
+      // if no round up, when value < 10, it cant scale up
+      items[i].height = Math.round(items[i].height * scale);
+      items[i].width = Math.round(items[i].width * scale);
+      console.log(items[i].width)
+    }
 
   }
 
@@ -70,16 +108,32 @@ export default class ImageViewer extends React.Component {
       e.preventDefault(); 
     };
     
-
+    // attach drag drop
     this.dropRef.current.addEventListener('drop', (events) => {
-      console.log('dropped');
-
 
       this.handleDropImage(events);
 
       // no need to send to backend
       //ipcRenderer.send('ondropfile', events.dataTransfer.files);
     });
+
+    // attach mousewheel
+    this.dropRef.current.addEventListener('wheel', (evt) => {
+      this.handleZoom(evt);
+    })
+
+
+    // context menu
+    // separate it ?
+    // https://www.electronjs.org/docs/api/menu
+    window.addEventListener('contextmenu', (e) => {
+      e.preventDefault();
+      ipcRenderer.send('show-context-menu')
+    })
+
+    ipcRenderer.on('context-menu-command', (e, command) => {
+      // ...
+    })
   }
 
   render() {
@@ -90,13 +144,9 @@ export default class ImageViewer extends React.Component {
         <Box ref={this.dropRef} id="dropZone" {...defaultProps} >
         </Box>
         */}
-        <div>
-          <div ref={this.viewRef}>
-          </div>
+        <div ref={this.viewRef}>
         </div>
       </Container>
     );
   }
-
-
 }

@@ -1,5 +1,7 @@
 const { app, BrowserWindow } = require('electron');
 
+const ContextMenu = require('./contextMenu')
+
 function createWindow() {
   const mainWindow = new BrowserWindow({
     width: 800,
@@ -25,3 +27,5 @@ app.on('activate', () => {
     createWindow();
   } 
 })
+
+this.contextMenu = new ContextMenu()

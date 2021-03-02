@@ -7,10 +7,11 @@
     {
       "type": "node",
       "request": "launch",
-      "name": "Launch Program via npm ",
+      "name": "electron dev",
       "cwd": "${workspaceFolder}",
       "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "dev"]
+      "runtimeArgs": ["run", "dev"],
+      "outputCapture": "std"
     }
   ]
 }

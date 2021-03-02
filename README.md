@@ -2,6 +2,13 @@
 
 === TODO ===
 middlewheel -> resize all image
+- resize all ?
+- resize single image when mouse hover on image?
+
+right click
+-> grey scale
+
+pan -> all image move
 
 === Development Plan ===
 
@@ -11,7 +18,9 @@ middlewheel -> resize all image
 - image drag-drop
 - value analyzer
 - Image canvas
-
+  - z-index?
+  - auto-resize?
+  - auto-alignment?
 # Later Stage
 - simple image edit
 - UI design
