@@ -12,6 +12,8 @@ function createWindow() {
   });
 
   mainWindow.loadFile(`${__dirname}/public/index.html`);
+
+  this.contextMenu = new ContextMenu(BrowserWindow)
 }
 
 app.whenReady().then(createWindow);
@@ -27,5 +29,3 @@ app.on('activate', () => {
     createWindow();
   } 
 })
-
-this.contextMenu = new ContextMenu()
