@@ -6,22 +6,44 @@ class ContextMenu {
     var self = this
     self.window = BrowserWindow
 
-    ipcMain.on('show-context-menu', (evt) => {
-      self.contextMenu(evt) 
+    ipcMain.on('show-context-menu', (evt, req) => {
+      self.contextMenu(evt, req) 
     })
   }
 }
 
-ContextMenu.prototype.contextMenu = function(evt) {
-  console.log('menu show')
-  const template = [
-    {
-      label: 'Menu Item 1',
-      click: () => { evt.sender.send('context-menu-command', 'menu-item-1') }
-    },
-    { type: 'separator' },
-    { label: 'Menu Item 2', type: 'checkbox', checked: true }
-  ]
+/**
+ * Core context menu communication logic
+ * - any better protocol?
+ * @param {*} evt 
+ * @param {*} req 
+ */
+ContextMenu.prototype.contextMenu = function(evt, req) {
+  console.log(req)
+  var isImg = (req[0] == 'IMG')
+
+  // refractor
+  const template = []
+
+  // img specific items
+  if (isImg) {
+    template.push({
+      label: 'Convert Greyscale',
+      click: () => { 
+        evt.sender.send('context-menu-command', 'menu-item-1')
+      }
+    })
+  } 
+    /*
+    //{ type: 'separator' },
+    { 
+      label: 'Menu Item 2',
+      type: 'checkbox', 
+      checked: true 
+    }
+    */
+
+
   const menu = Menu.buildFromTemplate(template)
   menu.popup(this.window.fromWebContents(evt.sender))
 }

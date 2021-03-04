@@ -8,7 +8,8 @@ function createWindow() {
     height: 600,
     webPreferences: {
       nodeIntegration: true
-    }
+    },
+    backgroundColor: '#303030'
   });
 
   mainWindow.loadFile(`${__dirname}/public/index.html`);

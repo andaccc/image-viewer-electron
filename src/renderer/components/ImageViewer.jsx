@@ -36,7 +36,7 @@ export default class ImageViewer extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-
+      imgIndex: 0 
     }
 
     this.handleDropImage = this.handleDropImage.bind(this);
@@ -57,10 +57,13 @@ export default class ImageViewer extends React.Component {
         // for image only
         reader.readAsDataURL(e.dataTransfer.files[0])
         reader.onloadend = () => {
-          let img = document.createElement('img');
-          img.src = reader.result;
+          let img = document.createElement('img')
+          img.src = reader.result
 
-          this.viewRef.current.appendChild(img);
+          img.id = this.state.imgIndex
+          this.state.imgIndex++
+
+          this.viewRef.current.appendChild(img)
 
           img.onload = function() {
             // limit image size
@@ -128,11 +131,17 @@ export default class ImageViewer extends React.Component {
     // https://www.electronjs.org/docs/api/menu
     window.addEventListener('contextmenu', (e) => {
       e.preventDefault();
-      ipcRenderer.send('show-context-menu')
+
+      var isImg = (e.target.tagName == 'IMG')
+      
+      var imgId = isImg? e.target.id : null
+      
+      ipcRenderer.send('show-context-menu', [e.target.tagName, imgId])
     })
 
     ipcRenderer.on('context-menu-command', (e, command) => {
       // ...
+
     })
   }
 
