@@ -8,7 +8,13 @@ middlewheel -> resize all image
 right click
 -> grey scale
 
+grey scale strategy
+- 
+- 
+
 pan -> all image move
+
+context menu protocol
 
 === Development Plan ===
 

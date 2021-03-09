@@ -16,6 +16,9 @@ const { ipcRenderer } = require('electron')
 // image drag drop use native api instead !!!!
 // https://www.electronjs.org/docs/tutorial/native-file-drag-drop
 
+/**
+ * TODO: image use react state
+ */
 
 const defaultProps = {
   borderRadius: "borderRadius",
@@ -41,6 +44,7 @@ export default class ImageViewer extends React.Component {
 
     this.handleDropImage = this.handleDropImage.bind(this);
     this.handleZoom = this.handleZoom.bind(this);
+    this.greyScaleImage = this.greyScaleImage.bind(this);
 
     this.dropRef = React.createRef();
     this.viewRef = React.createRef();
@@ -86,6 +90,24 @@ export default class ImageViewer extends React.Component {
   }
 
   /**
+   * grey scale image
+   * for now just use css
+   * - seem css method value becomes darker...
+   * @param {*} imgId 
+   */
+  greyScaleImage = (imgId) => {
+    // by css
+    var img = document.getElementById(imgId);
+    if (img.classList.contains("img-greyscale")) {
+      img.classList.remove("img-greyscale")
+    }
+    else {
+      img.classList.add("img-greyscale")
+    }
+  
+  }
+
+  /**
    * zoom resize
    *  - need to add scale limit
    * @param {*} e 
@@ -106,9 +128,11 @@ export default class ImageViewer extends React.Component {
   }
 
   componentDidMount() {
+    const that = this
+
     document.ondragover = function(e) {
       // need this for drop file to work
-      e.preventDefault(); 
+      e.preventDefault() 
     };
     
     // attach drag drop
@@ -140,8 +164,9 @@ export default class ImageViewer extends React.Component {
     })
 
     ipcRenderer.on('context-menu-command', (e, command) => {
-      // ...
-
+      if (command[0] === 'greyscale') {
+        that.greyScaleImage(command[1])
+      }
     })
   }
 

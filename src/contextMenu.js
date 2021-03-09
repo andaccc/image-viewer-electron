@@ -15,6 +15,7 @@ class ContextMenu {
 /**
  * Core context menu communication logic
  * - any better protocol?
+ * - jsonify object ?
  * @param {*} evt 
  * @param {*} req 
  */
@@ -30,7 +31,7 @@ ContextMenu.prototype.contextMenu = function(evt, req) {
     template.push({
       label: 'Convert Greyscale',
       click: () => { 
-        evt.sender.send('context-menu-command', 'menu-item-1')
+        evt.sender.send('context-menu-command', ['greyscale', req[1]])
       }
     })
   } 
