@@ -83,6 +83,14 @@ export default class ImageViewer extends React.Component {
 
           img.classList.add("img-zoomable");
 
+          // zoom single image
+          img.addEventListener('wheel', (evt) => {
+            evt.preventDefault();
+            var scale = evt.deltaY * -0.001 + 1;
+            img.height = Math.round(img.height * scale);
+            img.width = Math.round(img.width * scale);
+          })
+
           attachDrag(img);
         }
       }
@@ -145,10 +153,12 @@ export default class ImageViewer extends React.Component {
     });
 
     // attach mousewheel
+    // resize whole region
+    /*
     this.dropRef.current.addEventListener('wheel', (evt) => {
       this.handleZoom(evt);
     })
-
+    */
 
     // context menu
     // separate it ?

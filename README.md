@@ -9,8 +9,6 @@ right click
 -> grey scale
 
 grey scale strategy
-- 
-- 
 
 pan -> all image move
 
