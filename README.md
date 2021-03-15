@@ -1,6 +1,13 @@
 # image-viewer-electron
 
+Grey Scale/ histogram logic referenced from :
+https://phg1024.github.io/image/processing/2014/02/26/ImageProcJS4.html
+
 === TODO ===
+- value analyzer
+  - histogram
+  - simplify value
+
 middlewheel -> resize all image
 - resize all ?
 - resize single image when mouse hover on image?
@@ -20,7 +27,6 @@ context menu protocol
 - electron-react structure
     - https://github.com/electron-react-boilerplate/electron-react-boilerplate
 - image drag-drop
-- value analyzer
 - Image canvas
   - z-index?
   - auto-resize?

@@ -42,12 +42,15 @@ export default class ImageViewer extends React.Component {
       imgIndex: 0 
     }
 
-    this.handleDropImage = this.handleDropImage.bind(this);
-    this.handleZoom = this.handleZoom.bind(this);
-    this.greyScaleImage = this.greyScaleImage.bind(this);
+    this.handleDropImage = this.handleDropImage.bind(this)
+    this.handleZoom = this.handleZoom.bind(this)
+    this.greyScaleImage = this.greyScaleImage.bind(this)
+    this.triggerValueAnalyzer = this.triggerValueAnalyzer.bind(this)
 
-    this.dropRef = React.createRef();
-    this.viewRef = React.createRef();
+
+    this.dropRef = React.createRef()
+    this.viewRef = React.createRef()
+    this.analyzerRef = React.createRef()
   }
 
   handleDropImage = (e) => {
@@ -101,6 +104,9 @@ export default class ImageViewer extends React.Component {
    * grey scale image
    * for now just use css
    * - seem css method value becomes darker...
+   * 
+   * TODO: use this
+   * https://phg1024.github.io/image/processing/2014/02/26/ImageProcJS4.html
    * @param {*} imgId 
    */
   greyScaleImage = (imgId) => {
@@ -113,6 +119,30 @@ export default class ImageViewer extends React.Component {
       img.classList.add("img-greyscale")
     }
   
+  }
+
+  /**
+   * Trigger the value analyzer  
+   *  1. Histogram
+   *  2. Simply value
+   * @param {*} imgId target image id
+   */
+  triggerValueAnalyzer = (imgId) => {
+    var img = document.getElementById(imgId)
+
+    if (img.classList.contains("img-greyscale")) {
+      img.classList.remove("img-greyscale")
+    }
+
+    var tmp = img.cloneNode(true)
+    
+    // how to convert to rgba?
+    var ctx = this.analyzerRef.current.getContext('2d'); 
+    ctx.drawImage(tmp, 0, 0);
+
+    var imgData = ctx.getImageData(0, 0, tmp.width, tmp.height).data;
+    // each 4 places [0][1][2][3] = [r][g][b][a]
+
   }
 
   /**
@@ -132,7 +162,6 @@ export default class ImageViewer extends React.Component {
       items[i].width = Math.round(items[i].width * scale);
       console.log(items[i].width)
     }
-
   }
 
   componentDidMount() {
@@ -177,19 +206,19 @@ export default class ImageViewer extends React.Component {
       if (command[0] === 'greyscale') {
         that.greyScaleImage(command[1])
       }
+      else if (command[0] === 'value_analyzer') {
+        that.triggerValueAnalyzer(command[1])
+      }
     })
   }
 
   render() {
     return (
-      <Container ref={this.dropRef} id="main" 
-      >
-        {/*
-        <Box ref={this.dropRef} id="dropZone" {...defaultProps} >
-        </Box>
-        */}
+      <Container ref={this.dropRef} id="main" >
         <div ref={this.viewRef}>
         </div>
+        <canvas ref={this.analyzerRef} id="analyzer_canvas">
+        </canvas>
       </Container>
     );
   }

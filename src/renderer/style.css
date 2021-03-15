@@ -3,6 +3,11 @@
   height: 100vh;
 }
 
+#analyzer_canvas {
+  width: 200px;
+  height: 100px;
+}
+
 .draggable {
   position: absolute;
 }

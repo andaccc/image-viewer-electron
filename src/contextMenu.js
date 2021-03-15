@@ -20,6 +20,8 @@ class ContextMenu {
  * @param {*} req 
  */
 ContextMenu.prototype.contextMenu = function(evt, req) {
+  // [0]: element tag
+  // [1]: element id
   console.log(req)
   var isImg = (req[0] == 'IMG')
 
@@ -32,6 +34,11 @@ ContextMenu.prototype.contextMenu = function(evt, req) {
       label: 'Convert Greyscale',
       click: () => { 
         evt.sender.send('context-menu-command', ['greyscale', req[1]])
+      }
+    }, {
+      label: 'Value Analyzer',
+      click: () => {
+        evt.sender.send('context-menu-command', ['value_analyzer', req[1]])
       }
     })
   } 
