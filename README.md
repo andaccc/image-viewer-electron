@@ -19,9 +19,6 @@ grey scale strategy
 
 pan -> all image move
 
-<<<<<<< HEAD
-context menu protocol
-
 react debug tools
 
 =======
