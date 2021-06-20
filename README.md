@@ -19,10 +19,13 @@ grey scale strategy
 
 pan -> all image move
 
+<<<<<<< HEAD
 context menu protocol
 
 react debug tools
 
+=======
+>>>>>>> 73aac23411b271dd37f5f9dbbf558396043174a4
 === Development Plan ===
 
 # First phase
