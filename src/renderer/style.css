@@ -3,10 +3,19 @@
   height: 100vh;
 }
 
+/*
 #analyzer_canvas {
-  width: 200px;
-  height: 100px;
+  width: 100%;
+  height: 100%;
 }
+*/
+
+/*
+#hist_canvas {
+  width: 100%;
+  height: 100%;
+}
+*/
 
 .draggable {
   position: absolute;

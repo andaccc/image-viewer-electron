@@ -1,4 +1,11 @@
-const { app, BrowserWindow } = require('electron');
+const { app, session, BrowserWindow } = require('electron');
+const path = require('path')
+const os = require('os')
+
+const reactDevToolsPath = path.join(
+  os.homedir(),
+  '/AppData/Local/Google/Chrome/User Data/Default/Extensions/fmkadmapgofadopljbjfkapdkoienihi/4.10.1_0'
+)
 
 const ContextMenu = require('./contextMenu')
 
@@ -7,7 +14,8 @@ function createWindow() {
     width: 800,
     height: 600,
     webPreferences: {
-      nodeIntegration: true
+      nodeIntegration: true,
+      contextIsolation: false
     },
     backgroundColor: '#303030'
   });
@@ -17,7 +25,19 @@ function createWindow() {
   this.contextMenu = new ContextMenu(BrowserWindow)
 }
 
-app.whenReady().then(createWindow);
+
+// react debug tool
+app.whenReady()
+  .then(async () => {
+    await session.defaultSession.loadExtension(
+      reactDevToolsPath,
+      { allowFileAccess: true }   
+    )
+  })
+  .then(console.log('Loaded react-dev-tools'))
+  .then(createWindow)
+  .catch(console.log)
+
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {

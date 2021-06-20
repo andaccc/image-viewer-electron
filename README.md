@@ -21,6 +21,8 @@ pan -> all image move
 
 context menu protocol
 
+react debug tools
+
 === Development Plan ===
 
 # First phase

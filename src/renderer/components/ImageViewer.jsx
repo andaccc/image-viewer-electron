@@ -7,6 +7,9 @@ import './../style.css';
 
 import { attachDrag } from './../tools/dragHandler'
 
+// TODO: just import 
+import * as d3 from "d3"; 
+
 const { ipcRenderer } = require('electron')
 
 
@@ -35,6 +38,22 @@ const defaultProps = {
 const WIDTH_LIMIT = 500; 
 const HEIGHT_LIMIT = 500;
 
+// https://phg1024.github.io/image/processing/2014/02/26/ImageProcJS4.html
+function grayscaleFilter(imgData) {
+    // each 4 places [0][1][2][3] = [r][g][b][a]
+    var arr_r = imgData.filter( (data, index) => ((index + 4) % 4) === 0)
+    var arr_g = imgData.filter( (data, index) => ((index + 3) % 4) === 0)
+    var arr_b = imgData.filter( (data, index) => ((index + 2) % 4) === 0)
+    var arr_a = imgData.filter( (data, index) => ((index + 1) % 4) === 0)
+
+  // single brightness channel
+  var l = arr_r.map( (data, index) => {
+    Math.round(arr_r[index] * 0.299 + arr_g[index] * 0.587 + arr_b[index] * 0.114)
+  })
+
+    return l
+}
+
 export default class ImageViewer extends React.Component {
   constructor(props) {
     super(props);
@@ -51,6 +70,7 @@ export default class ImageViewer extends React.Component {
     this.dropRef = React.createRef()
     this.viewRef = React.createRef()
     this.analyzerRef = React.createRef()
+    this.histRef = React.createRef()
   }
 
   handleDropImage = (e) => {
@@ -124,7 +144,7 @@ export default class ImageViewer extends React.Component {
   /**
    * Trigger the value analyzer  
    *  1. Histogram
-   *  2. Simply value
+   *  2. Simplify value image
    * @param {*} imgId target image id
    */
   triggerValueAnalyzer = (imgId) => {
@@ -138,10 +158,27 @@ export default class ImageViewer extends React.Component {
     
     // how to convert to rgba?
     var ctx = this.analyzerRef.current.getContext('2d'); 
+
+    // TODO: resize canvas
+    // - fixed size css?
+    // but how to handle different ratio
+    ctx.canvas.width  = tmp.width;
+    ctx.canvas.height = tmp.height;
+
     ctx.drawImage(tmp, 0, 0);
 
     var imgData = ctx.getImageData(0, 0, tmp.width, tmp.height).data;
-    // each 4 places [0][1][2][3] = [r][g][b][a]
+
+    var grayData = grayscaleFilter(imgData)
+    
+    // TODO: draw hist
+    // https://www.d3-graph-gallery.com/graph/histogram_basic.html
+    var hist = [] 
+    grayData.forEach( (data) => {
+      let val = Math.floor(data / 255)
+      hist.push(val)
+    })
+
 
   }
 
@@ -160,7 +197,8 @@ export default class ImageViewer extends React.Component {
       // if no round up, when value < 10, it cant scale up
       items[i].height = Math.round(items[i].height * scale);
       items[i].width = Math.round(items[i].width * scale);
-      console.log(items[i].width)
+      
+      //console.log(items[i].width)
     }
   }
 
@@ -218,6 +256,8 @@ export default class ImageViewer extends React.Component {
         <div ref={this.viewRef}>
         </div>
         <canvas ref={this.analyzerRef} id="analyzer_canvas">
+        </canvas>
+        <canvas ref={this.histRef} id="hist_canvas">
         </canvas>
       </Container>
     );
