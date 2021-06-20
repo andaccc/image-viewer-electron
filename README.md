@@ -19,8 +19,6 @@ grey scale strategy
 
 pan -> all image move
 
-context menu protocol
-
 === Development Plan ===
 
 # First phase
